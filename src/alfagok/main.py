@@ -59,6 +59,12 @@ def read_root():
     return {"Hello": "World"}
 
 
+@app.get('/api/game')
+def what_game():
+    """Handle incoming guess."""
+    return {'game': get_game_id()}
+
+
 @app.get('/api/guess')
 def handle_guess(word: Union[str, None] = None):
     """Handle incoming guess."""
@@ -78,7 +84,7 @@ def handle_guess(word: Union[str, None] = None):
     logger.info('Guess: %s for game %d (%s), goal is %s', word, current_game_id, word_of_the_day, hint)
 
     # before, after, it
-    return {'hint': hint}
+    return {'game': current_game_id, 'hint': hint}
 
 
 @app.get("/api/answer/{item_id}")

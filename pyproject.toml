@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "webhaak"
+version = "0.6.0-pre"
+authors = [
+    {name = "Michiel Scholten", email = "michiel@diginaut.net"},
+]
+description= "Simple webhook service to update and deploy sites and do other maintenance and automatic tasks"
+readme = "README.rst"
+requires-python = ">=3.8"
+keywords = ["webhook", "api", "automation", "CI/CD", "Git", "monitoring"]
+license = {text = "Apache"}
+classifiers = [
+    "Framework :: FastAPI",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+]
+dependencies = [
+    "fastapi[all]",
+    "pydantic>2.0",
+    "strictyaml",
+    "gitpython",
+    "rq"
+]
+# dynamic = ["version"]
+
+[project.scripts]
+my-script = "webhaak:app"
+
+[project.urls]
+"Homepage" = "https://github.com/aquatix/webhaak"
+"Bug Tracker" = "https://github.com/aquatix/webhaak/issues"
+
+[tool.ruff]
+exclude = [
+    ".git",
+    "__pycache__",
+    "docs/source/conf.py",
+    "build",
+    "dist",
+    "example_config/gunicorn_webhaak_conf.py",
+    "example_config/rq_settings.example.py",
+    "example_config/settings.py",
+]
+line-length = 120
+
+[tool.ruff.format]
+# Use single quotes for non-triple-quoted strings.
+quote-style = "single"
+
+[tool.ruff.lint]
+ignore = ["D203", "D213"]
+select = [
+    "C9",
+    "D",
+    "E",
+    "F",
+    "I",
+    "W",
+]
+
+[tool.ruff.lint.isort]
+section-order = ["future", "standard-library","third-party", "first-party", "testing", "local-folder"]
+
+[tool.ruff.lint.isort.sections]
+testing = ["tests"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10

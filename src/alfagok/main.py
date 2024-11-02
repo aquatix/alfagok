@@ -43,7 +43,6 @@ if settings.debug:
 
 def get_game_id():
     """Calculate the index for the game/word we are handling today."""
-    print(settings.start_date)
     today = date.today()
     # Calculate the amount of days since the start of the games so we know which word is used today
     return (today - settings.start_date).days
@@ -67,6 +66,7 @@ def handle_guess(word: Union[str, None] = None):
     word_of_the_day = words[current_game_id].strip()
 
     if not is_valid_dictionary_word(word):
+        logger.info('Guess: %s for game %d (%s), word not found in dictionary', word, current_game_id, word_of_the_day)
         return {'error': 'Word not in dictionary'}
 
     hint = 'it'

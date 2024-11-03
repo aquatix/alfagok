@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="{{ language }}">
+    <head>
+        <title>alfagok</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/game.css">
+    </head>
+    <body>
+
+        <a href="/" v-cloak class="title">alphaguess</a> <span class="puzzleno">puzzle #{{numberOfDaysSinceStart}} • <span id="nextgame"></span></span>
+        <div v-cloak v-if="beforeGuesses.length || afterGuesses.length"><br></div>
+
+        <div v-cloak class="instructions" v-else>
+            <p>Guess the word of the day. Each guess reveals where the word sits alphabetically.</p>
+        </div>
+
+        <center>
+
+            <div>
+                <div v-if="winTime" class="win">
+                    <h3><b>You got it! 🎉</b></h3>
+                    <p>Today's word was <b>{{guessValue}}</b>.</p>
+                    <div id="stats">
+                        <div id="results">
+                            <p><b>🧩 Puzzle #{{numberOfDaysSinceStart}}</b></p>
+                            <p>🤔 {{guesses.length}} guesses</p>
+                            <p>⏱️ {{getFormattedTime(winTime - startTime)}}</p>
+                            <p>🔗 <span style="color:var(--blue)">alphaguess.com</span></p>
+                        </div>
+                    </div>
+                <div id="copyresults"></div>
+                <button class="copy" data-clipboard-target="#results">
+                      Tap to copy and share ❤️
+                </button>
+            </div>
+        </center>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js" rel=preload></script>
+        <script src="/static/copy.js"></script>
+        <script src="/static/countdown.js"></script>
+        <script src="/static/game.js"></script>
+    </body>
+</html>

@@ -1,11 +1,13 @@
 """Main alfagok API application."""
-
 import logging
 from datetime import date
 from typing import Union
 
-from fastapi import FastAPI
-from pydantic import FilePath
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from pydantic import DirectoryPath, FilePath
 from pydantic_settings import BaseSettings
 
 
@@ -19,11 +21,17 @@ class Settings(BaseSettings):
     # Date of first game so we can calculate the game ID we're on
     start_date: date
 
+    static_dir: DirectoryPath = 'static'
+    template_dir: DirectoryPath = 'templates'
+
     debug: bool = False
 
 
 app = FastAPI()
 settings = Settings()
+app.mount('/static', StaticFiles(directory=settings.static_dir), name='static')
+templates = Jinja2Templates(directory=settings.template_dir)
+
 
 with open(settings.word_list, 'r', encoding='utf-8') as word_file:
     # Load the game words
@@ -53,10 +61,11 @@ def is_valid_dictionary_word(word: str) -> bool:
     return f'{word}\n' in dictionary
 
 
-@app.get("/")
-def read_root():
-    """Ohai."""
-    return {"Hello": "World"}
+@app.get("/", response_class=HTMLResponse)
+async def index(request: Request):
+    """Generate the main HTML page of the game."""
+    language = 'nl'
+    return templates.TemplateResponse(request=request, name='index.html', context={'language': language})
 
 
 @app.get('/api/game')

@@ -12,7 +12,7 @@ function timer(){
   var hoursRemain   = Math.floor(diff/(60*60));
   var minutesRemain = Math.floor((diff-hoursRemain*60*60)/60);
   var secondsRemain = Math.floor(diff%60);
-  nextgame.innerHTML   = '<span class="nextgame">'+addZero(hoursRemain)+':'+addZero(minutesRemain)+':'+addZero(secondsRemain)+' left</span>';
+  nextgame.innerHTML   = '<span class="nextgame">'+addZero(hoursRemain)+':'+addZero(minutesRemain)+':'+addZero(secondsRemain)+' over</span>';
 }
 
 function addZero(num){

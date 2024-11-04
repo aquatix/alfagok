@@ -1,14 +1,6 @@
 /* API calls **/
-async function getGameID() {
-    let response = await fetch('/api/game');
-    let result = await response.json();
-    console.log(result);
-    if (result.game) {
-        return result.game;
-    }
-}
-
 async function doGuess(guessWord) {
+    Alpine.store('alfagok').loading = true;
     if (guessWord === '') {
         console.log('Nothing filled in');
         Alpine.store('alfagok').guessError = 'Vul een woord in';
@@ -22,11 +14,14 @@ async function doGuess(guessWord) {
     let response = await fetch('/api/guess/' + guessWord);
     let result = await response.json();
     console.log(result);
+
+    Alpine.store('alfagok').loading = false;
     if (result.error) {
         console.log('Error occurred during guess');
         if (result.error === 'Word not in dictionary') {
             Alpine.store('alfagok').guessError = 'Woord komt niet in de woordenlijst voor';
         }
+        return;
     }
     if (result.hint && result.hint === 'after') {
         console.log('na');
@@ -39,7 +34,6 @@ async function doGuess(guessWord) {
     if (result.hint && result.hint === 'it') {
         console.log('gevonden');
     }
-
 }
 
 /* Time formatting **/

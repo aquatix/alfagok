@@ -11,17 +11,11 @@
 
         <script>
             document.addEventListener('alpine:init', () => {
-                /*
-                const gameIDResult = await fetch('/api/game')
-                if (!gameIDResult.ok) {
-                    throw new Error(`${gameIDResult.status}: ${await gameIDResult.text()}`);
-                }
-                Alpine.store('alfagok', {
-                    gameID: await gameIDResult.json().game,
-                })
-                */
                 Alpine.store('alfagok', {
                     gameID: 0,
+
+                    loading: false,
+
                     winTime: null,
                     startTime: null,
 
@@ -32,7 +26,20 @@
                     guessValue: '',
 
                     guessError: '',
-                })
+
+                    async getGameID() {
+                        this.loading = true;
+                        console.log('Loading gameID...');
+                        let response = await fetch('/api/game');
+                        let result = await response.json();
+                        console.log(result);
+                        this.loading = false;
+                        if (result.game) {
+                            return this.gameID = result.game;
+                        }
+                    }
+
+                }),
 
                 Alpine.store('darkMode', {
                     init() {
@@ -114,7 +121,8 @@
 
         <script>
             document.addEventListener('alpine:initialized', () => {
-                Alpine.store('alfagok').gameID = getGameID();
+                //Alpine.store('alfagok').gameID = getGameID();
+                Alpine.store('alfagok').getGameID();
             })
         </script>
 

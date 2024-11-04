@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/static/game.css">
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
     <body>
 
@@ -26,6 +27,8 @@
                 guessValue: '',
                 gameID: 0,
 
+                guessError: '',
+
                 get filteredItems() {
                     return this.items.filter(
                         i => i.startsWith(this.search)
@@ -34,8 +37,8 @@
             }"
         >
 
-            <a href="/" x-cloak class="title">alfagok</a> <span class="puzzleno">puzzle #[[ gameID ]] • <span id="nextgame"></span></span>
-            <div x-cloak x-if="guessesBefore.length || guessesAfter.length"><br></div>
+            <a href="/" x-cloak class="title">alfagok</a> <span class="puzzleno">puzzle #<span x-text="gameID"></span> • <span id="nextgame"></span></span>
+            <div x-cloak x-show="guessesBefore.length || guessesAfter.length"><br></div>
 
             <div x-cloak class="instructions" x-else>
                 <p>Raad het woord van de dag. Elke gok geeft een hint over waar het woord zich in het alfabet bevindt.</p>
@@ -51,9 +54,10 @@
                     </template>
                 </ul>
 
-                <input type="text" x-model="guessValue">
+                <input type="text" x-model="guessValue" @keyup.enter="doGuess(guessValue, guessError)">
                 <p x-cloak>Je huidige gok is: <span x-text="guessValue"></span></p>
-                <input type="button" value="Doe een gok">
+                <button @click="doGuess(guessValue, guessError)">Doe een gok</button>
+                <p x-show="guessError" x-text="guessError"></p>
 
                 <ul>
                     <template x-for="item in guessesAfter" :key="item">
@@ -63,20 +67,20 @@
 
 
                 <div>
-                    <div v-if="winTime" class="win">
+                    <div x-show="winTime" class="win">
                         <h3><b>Je hebt hem! 🎉</b></h3>
                         <p>Het woord van vandaag was <b x-text="guessValue"></b>.</p>
                         <div id="stats">
                             <div id="results">
                                 <p><b x-data="{ message: '🧩 Puzzle #' + gameID }" x-text="message"></b></p>
                                 <p x-data="{ message: '🤔 '+ nrGuesses + ' gokken' }" x-text="message"></p>
-                                <p x-data="{ message: '⏱️ ' + getFormattedTime(winTime - startTime) '" x-text="message"></p>
+                                <p x-data="{ message: '⏱️ ' + getFormattedTime(winTime - startTime) }" x-text="message"></p>
                                 <p>🔗 <span style="color:var(--blue)">alfagok.diginaut.net</span></p>
                             </div>
                         </div>
                     <div id="copyresults"></div>
                     <button class="copy" data-clipboard-target="#results">
-                          Tik om te kopi&euml;ren te delen ❤️
+                          Tik om te kopi&euml;ren en te delen ❤️
                     </button>
                 </div>
             </center>
@@ -92,10 +96,9 @@
 
         </div>
 
-        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js" rel=preload></script>
-        <script src="/static/copy.js"></script>
-        <script src="/static/countdown.js"></script>
+        {#        <script src="/static/copy.js"></script>
+        <script src="/static/countdown.js"></script>#}
         <script src="/static/game.js"></script>
 
     </body>

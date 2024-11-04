@@ -75,7 +75,7 @@ def what_game():
     return {'game': get_game_id()}
 
 
-@app.get('/api/guess')
+@app.get('/api/guess/{word}')
 def handle_guess(word: Union[str, None] = None):
     """Handle incoming guess."""
     current_game_id = get_game_id()
@@ -97,8 +97,8 @@ def handle_guess(word: Union[str, None] = None):
     return {'game': current_game_id, 'hint': hint}
 
 
-@app.get("/api/answer/{item_id}")
+@app.get('/api/answer/{item_id}')
 def read_item(item_id: int, guess: Union[str, None] = None):
-    """Get the word item."""
+    """Get the word for the current game."""
     word = words[item_id].strip()
-    return {"item_id": item_id, "guess": guess, 'word': word}
+    return {'item_id': item_id, 'guess': guess, 'word': word}

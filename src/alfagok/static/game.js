@@ -1,12 +1,14 @@
 /* API calls **/
 async function doGuess(guessWord) {
     Alpine.store('alfagok').loading = true;
+        Alpine.store('alfagok').guessError = null;
     if (guessWord === '') {
         console.log('Nothing filled in');
         Alpine.store('alfagok').guessError = 'Vul een woord in';
         return;
     }
 
+    Alpine.store('alfagok').nrGuesses++;
     if (Alpine.store('alfagok').startTime === '') {
         console.log('Setting startTime to now');
     }
@@ -33,6 +35,7 @@ async function doGuess(guessWord) {
     }
     if (result.hint && result.hint === 'it') {
         console.log('gevonden');
+        Alpine.store('alfagok').winTime = 'yay';
     }
 }
 

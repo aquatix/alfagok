@@ -79,7 +79,7 @@
                 </ul>
 
                 <input type="text" x-model="$store.alfagok.guessValue" @keyup.enter="doGuess($store.alfagok.guessValue)">
-                <p x-cloak>Je huidige gok is: <span x-text="$store.alfagok.guessValue"></span></p>
+{#                <p x-cloak>Je huidige gok is: <span x-text="$store.alfagok.guessValue"></span></p>#}
                 <button @click="doGuess($store.alfagok.guessValue)">Doe een gok</button>
                 <p x-show="$store.alfagok.guessError" x-text="$store.alfagok.guessError"></p>
 

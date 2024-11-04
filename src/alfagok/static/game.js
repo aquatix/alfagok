@@ -8,18 +8,38 @@ async function getGameID() {
     }
 }
 
-async function doGuess(guessWord, guessError) {
+async function doGuess(guessWord) {
+    if (guessWord === '') {
+        console.log('Nothing filled in');
+        Alpine.store('alfagok').guessError = 'Vul een woord in';
+        return;
+    }
+
+    if (Alpine.store('alfagok').startTime === '') {
+        console.log('Setting startTime to now');
+    }
+
     let response = await fetch('/api/guess/' + guessWord);
     let result = await response.json();
     console.log(result);
     if (result.error) {
         console.log('Error occurred during guess');
         if (result.error === 'Word not in dictionary') {
-            guessError = 'Woord komt niet in de woordenlijst voor';
+            Alpine.store('alfagok').guessError = 'Woord komt niet in de woordenlijst voor';
         }
-        console.log(guessError);
     }
-    return result;
+    if (result.hint && result.hint === 'after') {
+        console.log('na');
+        Alpine.store('alfagok').guessesBefore.push(guessWord);
+    }
+    if (result.hint && result.hint === 'before') {
+        console.log('voor');
+        Alpine.store('alfagok').guessesAfter.push(guessWord);
+    }
+    if (result.hint && result.hint === 'it') {
+        console.log('gevonden');
+    }
+
 }
 
 /* Time formatting **/

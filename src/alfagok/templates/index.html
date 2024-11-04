@@ -9,36 +9,53 @@
     </head>
     <body>
 
+        <script>
+            document.addEventListener('alpine:init', () => {
+                /*
+                const gameIDResult = await fetch('/api/game')
+                if (!gameIDResult.ok) {
+                    throw new Error(`${gameIDResult.status}: ${await gameIDResult.text()}`);
+                }
+                Alpine.store('alfagok', {
+                    gameID: await gameIDResult.json().game,
+                })
+                */
+                Alpine.store('alfagok', {
+                    gameID: 0,
+                    winTime: null,
+                    startTime: null,
+
+                    nrGuesses: 0,
+                    guessesBefore: ['blah'],
+                    guessesAfter: [],
+
+                    guessValue: '',
+
+                    guessError: '',
+                })
+
+                Alpine.store('darkMode', {
+                    init() {
+                        this.on = window.matchMedia('(prefers-color-scheme: dark)').matches
+                    },
+
+                    on: false,
+
+                    toggle() {
+                        this.on = ! this.on
+                    }
+                })
+
+            })
+        </script>
+
         <div
             id="container"
-            x-data="{
-                search: '',
-
-                items: ['foo', 'bar', 'baz'],
-
-                winTime: null,
-                startTime: null,
-
-                nrGuesses: 0,
-
-                guessesBefore: ['blah'],
-                guessesAfter: [],
-
-                guessValue: '',
-                gameID: 0,
-
-                guessError: '',
-
-                get filteredItems() {
-                    return this.items.filter(
-                        i => i.startsWith(this.search)
-                    )
-                }
-            }"
         >
 
-            <a href="/" x-cloak class="title">alfagok</a> <span class="puzzleno">puzzle #<span x-text="gameID"></span> • <span id="nextgame"></span></span>
-            <div x-cloak x-show="guessesBefore.length || guessesAfter.length"><br></div>
+            <a href="/" x-cloak class="title">alfagok</a> <span class="puzzleno">puzzle #<span x-text="$store.alfagok.gameID"></span> • <span id="nextgame"></span></span>
+
+            <div x-cloak x-show="$store.alfagok.guessesBefore.length || $store.alfagok.guessesAfter.length"><br></div>
 
             <div x-cloak class="instructions" x-else>
                 <p>Raad het woord van de dag. Elke gok geeft een hint over waar het woord zich in het alfabet bevindt.</p>
@@ -47,57 +64,59 @@
 
             <center>
 
-
                 <ul>
-                    <template x-for="item in guessesBefore" :key="item">
+                    <template x-for="item in $store.alfagok.guessesBefore" :key="item">
                         <li x-text="item"></li>
                     </template>
                 </ul>
 
-                <input type="text" x-model="guessValue" @keyup.enter="doGuess(guessValue, guessError)">
-                <p x-cloak>Je huidige gok is: <span x-text="guessValue"></span></p>
-                <button @click="doGuess(guessValue, guessError)">Doe een gok</button>
-                <p x-show="guessError" x-text="guessError"></p>
+                <input type="text" x-model="$store.alfagok.guessValue" @keyup.enter="doGuess($store.alfagok.guessValue)">
+                <p x-cloak>Je huidige gok is: <span x-text="$store.alfagok.guessValue"></span></p>
+                <button @click="doGuess($store.alfagok.guessValue)">Doe een gok</button>
+                <p x-show="$store.alfagok.guessError" x-text="$store.alfagok.guessError"></p>
 
                 <ul>
-                    <template x-for="item in guessesAfter" :key="item">
+                    <template x-for="item in $store.alfagok.guessesAfter" :key="item">
                         <li x-text="item"></li>
                     </template>
                 </ul>
 
 
                 <div>
-                    <div x-show="winTime" class="win">
+                    <div x-show="$store.alfagok.winTime" class="win">
                         <h3><b>Je hebt hem! 🎉</b></h3>
-                        <p>Het woord van vandaag was <b x-text="guessValue"></b>.</p>
+                        <p>Het woord van vandaag was <b x-text="$store.alfagok.guessValue"></b>.</p>
                         <div id="stats">
                             <div id="results">
-                                <p><b x-data="{ message: '🧩 Puzzle #' + gameID }" x-text="message"></b></p>
-                                <p x-data="{ message: '🤔 '+ nrGuesses + ' gokken' }" x-text="message"></p>
-                                <p x-data="{ message: '⏱️ ' + getFormattedTime(winTime - startTime) }" x-text="message"></p>
+                                <p><b x-data="{ message: '🧩 Puzzle #' + $store.alfagok.gameID }" x-text="message"></b></p>
+                                <p x-data="{ message: '🤔 '+ $store.alfagok.nrGuesses + ' gokken' }" x-text="message"></p>
+                                <p x-data="{ message: '⏱️ ' + getFormattedTime($store.alfagok.winTime - $store.alfagok.startTime) }" x-text="message"></p>
                                 <p>🔗 <span style="color:var(--blue)">alfagok.diginaut.net</span></p>
                             </div>
                         </div>
-                    <div id="copyresults"></div>
-                    <button class="copy" data-clipboard-target="#results">
-                          Tik om te kopi&euml;ren en te delen ❤️
-                    </button>
+                        <div id="copyresults"></div>
+                        <button class="copy" data-clipboard-target="#results">
+                              Tik om te kopi&euml;ren en te delen ❤️
+                        </button>
+                    </div>
                 </div>
             </center>
 
-
-            <input x-model="search" placeholder="Search...">
-
-            <ul>
-                <template x-for="item in filteredItems" :key="item">
-                    <li x-text="item"></li>
-                </template>
-            </ul>
-
         </div>
+
+
+        <button x-data @click="$store.darkMode.toggle()">Toggle Dark Mode</button>
+        <div x-data :class="$store.darkMode.on && 'bg-black'">...</div>
+
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js" rel=preload></script>
         <script src="/static/game.js"></script>
+
+        <script>
+            document.addEventListener('alpine:initialized', () => {
+                Alpine.store('alfagok').gameID = getGameID();
+            })
+        </script>
 
     </body>
 </html>

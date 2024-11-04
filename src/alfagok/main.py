@@ -58,6 +58,7 @@ def get_game_id():
 
 def is_valid_dictionary_word(word: str) -> bool:
     """Verify if `word` is in the dictionary provided."""
+    # Either we: [ ] strip all the endlines during file load, or [x] use the endline to search here
     return f'{word}\n' in dictionary
 
 

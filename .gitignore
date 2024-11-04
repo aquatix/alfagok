@@ -81,3 +81,6 @@ TAGS
 # settings
 settings.py
 rq_settings.py
+
+# Generated word lists
+wordlist/*.txt

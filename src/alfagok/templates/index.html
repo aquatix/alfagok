@@ -20,7 +20,7 @@
                     startTime: null,
 
                     nrGuesses: 0,
-                    guessesBefore: ['blah'],
+                    guessesBefore: [],
                     guessesAfter: [],
 
                     guessValue: '',
@@ -58,6 +58,7 @@
 
         <div
             id="container"
+            x-data=""
         >
 
             <a href="/" x-cloak class="title">alfagok</a> <span class="puzzleno">puzzle #<span x-text="$store.alfagok.gameID"></span> • <span id="nextgame"></span></span>

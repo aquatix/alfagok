@@ -61,3 +61,12 @@ input[type="text"], button, .error {
     padding: .5rem;
     font-size: 1.5rem;
 }
+
+.win {
+    background-color: rgb(42 73 54);
+    padding: 1rem;
+}
+
+.results {
+    background-color: #333;
+}

@@ -20,7 +20,7 @@
 
             <center>
 
-                <p class="guessesheading" x-show="$store.alfagok.guessesBefore.length">Het woord van de dag komt <em>na</em>:</p>
+                <p class="guessesheading" x-cloak x-show="$store.alfagok.guessesBefore.length">Het woord van de dag komt <em>na</em>:</p>
                 <ul class="guessesbefore">
                     <template x-for="item in $store.alfagok.guessesBefore" :key="item">
                         <li x-text="item"></li>
@@ -31,10 +31,10 @@
                     <input type="text" autocomplete="new-password" autocorrect="off" x-model="$store.alfagok.guessValue" @keyup.enter="$store.alfagok.doGuess()">
 {#                <p x-cloak>Je huidige gok is: <span x-text="$store.alfagok.guessValue"></span></p>#}
                     <button @click="$store.alfagok.doGuess()">Doe een gok</button>
-                    <p class="error" x-show="$store.alfagok.guessError" x-text="$store.alfagok.guessError"></p>
+                    <p class="error" x-cloak x-show="$store.alfagok.guessError" x-text="$store.alfagok.guessError"></p>
                 </div>
 
-                <div x-show="$store.alfagok.winTime" class="win">
+                <div x-cloak x-show="$store.alfagok.winTime" class="win">
                     <h3><b>Je hebt hem! 🎉</b></h3>
                     <p>Het woord van vandaag was <b x-text="$store.alfagok.guessValue"></b>.</p>
                     <div id="stats">
@@ -51,13 +51,12 @@
                     </button>
                 </div>
 
-                <p class="guessesheading" x-show="$store.alfagok.guessesAfter.length">Het woord van de dag komt <em>voor</em>:</p>
+                <p class="guessesheading" x-cloak x-show="$store.alfagok.guessesAfter.length">Het woord van de dag komt <em>voor</em>:</p>
                 <ul class="guessesafter">
                     <template x-for="item in $store.alfagok.guessesAfter" :key="item">
                         <li x-text="item"></li>
                     </template>
                 </ul>
-
 
             </center>
 

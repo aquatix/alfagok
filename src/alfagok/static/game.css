@@ -7,6 +7,8 @@ body {
     padding: 2rem 1rem;
 }
 
+[x-cloak] { display: none !important; }
+
 a.title {
     color: #FF9800;
     font-weight: bold;

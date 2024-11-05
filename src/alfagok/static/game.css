@@ -1,6 +1,36 @@
 body {
     background-color: #333;
     color: #FFF;
+
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+a.title {
+    color: #FF9800;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1.5rem;
+}
+
+.puzzleno {
+    border: 1px solid grey;
+    color: grey;
+    padding: .2em .5em;
+    border-radius: 1em;
+    text-align: right;
+    float: right;
+}
+
+.instructions {
+    padding: 2rem 0;
+}
+
+input[type="text"] {
+    box-sizing: border-box;
+    width: 100%;
+    padding: .5rem;
 }
 
 button {
@@ -8,5 +38,14 @@ button {
     color: #333;
 
     border: 0;
-    padding: .2rem;
+    padding: .5rem;
+    margin-top: .5rem;
+
+    cursor: pointer;
+
+    width: 100%;
+}
+
+ul {
+    list-style-type: none;
 }

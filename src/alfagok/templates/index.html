@@ -9,19 +9,13 @@
     </head>
     <body>
 
-        <div
-            id="container"
-            x-data=""
-        >
+        <div id="container" x-data="">
 
-            <a href="/" x-cloak class="title">alfagok</a> <span class="puzzleno">puzzle #<span x-text="$store.alfagok.gameID"></span> • <span id="nextgame"></span></span>
+            <a href="/" x-cloak class="title">alfagok</a> <span class="puzzleno">puzzel #<span x-text="$store.alfagok.gameID"></span> • <span id="nextgame"></span></span>
 
-            <div x-cloak x-show="$store.alfagok.guessesBefore.length || $store.alfagok.guessesAfter.length"><br></div>
-
-            <div x-cloak class="instructions" x-else>
+            <div x-cloak class="instructions" x-show="$store.alfagok.guessesBefore.length === 0 && $store.alfagok.guessesAfter.length === 0">
                 <p>Raad het woord van de dag. Elke gok geeft een hint over waar het woord zich in het alfabet bevindt.</p>
             </div>
-
 
             <center>
 
@@ -49,7 +43,7 @@
                         <p>Het woord van vandaag was <b x-text="$store.alfagok.guessValue"></b>.</p>
                         <div id="stats">
                             <div id="results">
-                                <p><b x-data="{ message: '🧩 Puzzle #' + $store.alfagok.gameID }" x-text="message"></b></p>
+                                <p><b x-data="{ message: '🧩 Puzzel #' + $store.alfagok.gameID }" x-text="message"></b></p>
                                 <p x-data="{ message: '🤔 '+ $store.alfagok.nrGuesses + ' gokken' }" x-text="message"></p>
                                 <p x-data="{ message: '⏱️ ' + getFormattedTime($store.alfagok.winTime - $store.alfagok.startTime) }" x-text="message"></p>
                                 <p>🔗 <span style="color:var(--blue)">alfagok.diginaut.net</span></p>

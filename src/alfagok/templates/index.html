@@ -9,53 +9,6 @@
     </head>
     <body>
 
-        <script>
-            document.addEventListener('alpine:init', () => {
-                Alpine.store('alfagok', {
-                    gameID: 0,
-
-                    loading: false,
-
-                    winTime: null,
-                    startTime: null,
-
-                    nrGuesses: 0,
-                    guessesBefore: [],
-                    guessesAfter: [],
-
-                    guessValue: '',
-
-                    guessError: '',
-
-                    async getGameID() {
-                        this.loading = true;
-                        console.log('Loading gameID...');
-                        let response = await fetch('/api/game');
-                        let result = await response.json();
-                        console.log(result);
-                        this.loading = false;
-                        if (result.game) {
-                            return this.gameID = result.game;
-                        }
-                    }
-
-                }),
-
-                Alpine.store('darkMode', {
-                    init() {
-                        this.on = window.matchMedia('(prefers-color-scheme: dark)').matches
-                    },
-
-                    on: false,
-
-                    toggle() {
-                        this.on = ! this.on
-                    }
-                })
-
-            })
-        </script>
-
         <div
             id="container"
             x-data=""
@@ -78,9 +31,9 @@
                     </template>
                 </ul>
 
-                <input type="text" x-model="$store.alfagok.guessValue" @keyup.enter="doGuess($store.alfagok.guessValue)">
+                <input type="text" x-model="$store.alfagok.guessValue" @keyup.enter="$store.alfagok.doGuess($store.alfagok.guessValue)">
 {#                <p x-cloak>Je huidige gok is: <span x-text="$store.alfagok.guessValue"></span></p>#}
-                <button @click="doGuess($store.alfagok.guessValue)">Doe een gok</button>
+                <button @click="$store.alfagok.doGuess($store.alfagok.guessValue)">Doe een gok</button>
                 <p x-show="$store.alfagok.guessError" x-text="$store.alfagok.guessError"></p>
 
                 <ul>
@@ -112,20 +65,12 @@
 
         </div>
 
-
-        <button x-data @click="$store.darkMode.toggle()">Toggle Dark Mode</button>
-        <div x-data :class="$store.darkMode.on && 'bg-black'">...</div>
-
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js" rel=preload></script>
         <script src="/static/game.js"></script>
-
-        <script>
-            document.addEventListener('alpine:initialized', () => {
-                //Alpine.store('alfagok').gameID = getGameID();
-                Alpine.store('alfagok').getGameID();
-            })
-        </script>
+{#
+        <button x-data @click="$store.darkMode.toggle()">Toggle Dark Mode</button>
+        <div x-data :class="$store.darkMode.on && 'bg-black'">...</div>
+#}
 
     </body>
 </html>

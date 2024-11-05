@@ -73,10 +73,12 @@ document.addEventListener('alpine:init', () => {
             if (result.hint && result.hint === 'after') {
                 this.guessesBefore.push(this.guessValue);
                 this.guessesBefore.sort();
+                this.guessValue = '';
             }
             if (result.hint && result.hint === 'before') {
                 this.guessesAfter.push(this.guessValue);
                 this.guessesAfter.sort();
+                this.guessValue = '';
             }
             if (result.hint && result.hint === 'it') {
                 console.log('gevonden!');

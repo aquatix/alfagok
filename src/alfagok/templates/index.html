@@ -31,9 +31,9 @@
                     </template>
                 </ul>
 
-                <input type="text" autocomplete="new-password" autocorrect="off" x-model="$store.alfagok.guessValue" @keyup.enter="$store.alfagok.doGuess($store.alfagok.guessValue)">
+                <input type="text" autocomplete="new-password" autocorrect="off" x-model="$store.alfagok.guessValue" @keyup.enter="$store.alfagok.doGuess()">
 {#                <p x-cloak>Je huidige gok is: <span x-text="$store.alfagok.guessValue"></span></p>#}
-                <button @click="$store.alfagok.doGuess($store.alfagok.guessValue)">Doe een gok</button>
+                <button @click="$store.alfagok.doGuess()">Doe een gok</button>
                 <p x-show="$store.alfagok.guessError" x-text="$store.alfagok.guessError"></p>
 
                 <ul>

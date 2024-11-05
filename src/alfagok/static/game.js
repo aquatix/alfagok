@@ -1,5 +1,6 @@
 document.addEventListener('alpine:init', () => {
     Alpine.store('alfagok', {
+        /* Main alfagok application, state etc */
         gameID: 0,
 
         loading: false,
@@ -16,6 +17,7 @@ document.addEventListener('alpine:init', () => {
         guessError: '',
 
         async getGameID() {
+            /* Get the game number from the backend */
             this.loading = true;
             console.log('Loading gameID...');
             let response = await fetch('/api/game');
@@ -27,25 +29,36 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async doGuess(guessWord) {
-            this.loading = true;
-                this.guessError = null;
-            if (guessWord === '') {
+        async doGuess() {
+            /* Check guess against server */
+            this.guessError = null;
+
+            this.guessValue = this.guessValue.toLowerCase();
+
+            if (this.guessValue === '') {
                 console.log('Nothing filled in');
                 this.guessError = 'Vul een woord in';
+                return;
+            }
+            if (this.guessesBefore.includes(this.guessValue) || this.guessesAfter.includes(this.guessValue)) {
+                this.guessError = 'Woord is al gebruikt';
                 return;
             }
 
             this.nrGuesses++;
             if (this.startTime === '') {
                 console.log('Setting startTime to now');
+                this.startTime = now();
             }
 
-            let response = await fetch('/api/guess/' + guessWord);
+            this.loading = true;
+
+            let response = await fetch('/api/guess/' + this.guessValue);
             let result = await response.json();
             console.log(result);
 
             this.loading = false;
+
             if (result.error) {
                 console.log('Error occurred during guess');
                 if (result.error === 'Word not in dictionary') {
@@ -54,25 +67,23 @@ document.addEventListener('alpine:init', () => {
                 return;
             }
             if (result.hint && result.hint === 'after') {
-                console.log('na');
-                this.guessesBefore.push(guessWord);
+                this.guessesBefore.push(this.guessValue);
+                this.guessesBefore.sort();
             }
             if (result.hint && result.hint === 'before') {
-                console.log('voor');
-                this.guessesAfter.push(guessWord);
+                this.guessesAfter.push(this.guessValue);
+                this.guessesAfter.sort();
             }
             if (result.hint && result.hint === 'it') {
-                console.log('gevonden');
-                this.winTime = 'yay';
+                console.log('gevonden!');
+                this.winTime = now();
             }
         }
-
-
-
 
     }),
 
     Alpine.store('darkMode', {
+        /* Different Alpine app, dark mode settings for the game */
         init() {
             this.on = window.matchMedia('(prefers-color-scheme: dark)').matches
         },
@@ -152,8 +163,9 @@ function addZero(num){
 go();
 
 
-/* Get current gameID **/
+/* Get current gameID etc **/
 
 document.addEventListener('alpine:initialized', () => {
+    /* On AlpineJS completely loaded, do all this */
     Alpine.store('alfagok').getGameID();
 })

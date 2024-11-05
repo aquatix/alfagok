@@ -16,6 +16,10 @@ document.addEventListener('alpine:init', () => {
 
         guessError: '',
 
+        resultGameID: '',
+        resultGuesses: '',
+        resultTimeTaken: '',
+
         async getGameID() {
             /* Get the game number from the backend */
             this.loading = true;
@@ -30,7 +34,6 @@ document.addEventListener('alpine:init', () => {
         },
 
         async doGuess() {
-            /* Check guess against server */
             this.guessError = null;
 
             this.guessValue = this.guessValue.toLowerCase();
@@ -46,11 +49,12 @@ document.addEventListener('alpine:init', () => {
             }
 
             this.nrGuesses++;
-            if (this.startTime === '') {
+            if (this.startTime === null) {
                 console.log('Setting startTime to now');
-                this.startTime = now();
+                this.startTime = new Date();
             }
 
+            /* Check guess against server */
             this.loading = true;
 
             let response = await fetch('/api/guess/' + this.guessValue);
@@ -76,7 +80,10 @@ document.addEventListener('alpine:init', () => {
             }
             if (result.hint && result.hint === 'it') {
                 console.log('gevonden!');
-                this.winTime = now();
+                this.winTime = new Date();
+                this.resultGameID = '🧩 Puzzel #' + this.gameID;
+                this.resultGuesses = '🤔 '+ this.nrGuesses + ' gokken';
+                this.resultTimeTaken = '⏱️ ' + getFormattedTime(this.winTime - this.startTime);
             }
         }
     }),
@@ -111,7 +118,7 @@ function getFormattedTime(milliseconds) {
 
     const formattedTime = [];
     if (hours) {
-        formattedTime.push(`${hours}h`);
+        formattedTime.push(`${hours}u`);
     }
     if (minutes) {
         formattedTime.push(`${minutes}m`);

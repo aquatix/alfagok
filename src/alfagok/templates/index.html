@@ -44,9 +44,9 @@
                         <p>Het woord van vandaag was <b x-text="$store.alfagok.guessValue"></b>.</p>
                         <div id="stats">
                             <div id="results">
-                                <p><b x-data="{ message: '🧩 Puzzel #' + $store.alfagok.gameID }" x-text="message"></b></p>
-                                <p x-data="{ message: '🤔 '+ $store.alfagok.nrGuesses + ' gokken' }" x-text="message"></p>
-                                <p x-data="{ message: '⏱️ ' + getFormattedTime($store.alfagok.winTime - $store.alfagok.startTime) }" x-text="message"></p>
+                                <p><b x-text="$store.alfagok.resultGameID"></b></p>
+                                <p x-text="$store.alfagok.resultGuesses"></p>
+                                <p x-text="$store.alfagok.resultTimeTaken"></p>
                                 <p>🔗 <span style="color:var(--blue)">alfagok.diginaut.net</span></p>
                             </div>
                         </div>

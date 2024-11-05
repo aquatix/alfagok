@@ -20,6 +20,7 @@
 
             <center>
 
+                <p class="guessesheading" x-show="$store.alfagok.guessesBefore.length">Het woord van de dag komt <em>na</em>:</p>
                 <ul class="guessesbefore">
                     <template x-for="item in $store.alfagok.guessesBefore" :key="item">
                         <li x-text="item"></li>
@@ -31,6 +32,7 @@
                 <button @click="$store.alfagok.doGuess()">Doe een gok</button>
                 <p class="error" x-show="$store.alfagok.guessError" x-text="$store.alfagok.guessError"></p>
 
+                <p class="guessesheading" x-show="$store.alfagok.guessesAfter.length">Het woord van de dag komt <em>voor</em>:</p>
                 <ul class="guessesafter">
                     <template x-for="item in $store.alfagok.guessesAfter" :key="item">
                         <li x-text="item"></li>

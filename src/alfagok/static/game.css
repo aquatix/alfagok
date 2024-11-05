@@ -23,12 +23,16 @@ a.title {
     float: right;
 }
 
+#container center {
+    padding-top: 2rem;
+}
+
 .instructions {
     padding: 2rem 0 0 0;
 }
 
-.guessesbefore {
-    padding-top: 2rem;
+.guessesheading {
+    color: grey;
 }
 
 input[type="text"] {

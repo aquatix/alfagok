@@ -4,6 +4,7 @@
         <title>alfagok</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Raad het woord van de dag. Elke gok geeft een hint over waar het woord zich in het alfabet bevindt. Iedereen speelt hetzelfde woord.">
         <link rel="stylesheet" href="/static/game.css">
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
@@ -19,7 +20,7 @@
 
             <center>
 
-                <ul>
+                <ul class="guessesbefore">
                     <template x-for="item in $store.alfagok.guessesBefore" :key="item">
                         <li x-text="item"></li>
                     </template>
@@ -28,9 +29,9 @@
                 <input type="text" autocomplete="new-password" autocorrect="off" x-model="$store.alfagok.guessValue" @keyup.enter="$store.alfagok.doGuess()">
 {#                <p x-cloak>Je huidige gok is: <span x-text="$store.alfagok.guessValue"></span></p>#}
                 <button @click="$store.alfagok.doGuess()">Doe een gok</button>
-                <p x-show="$store.alfagok.guessError" x-text="$store.alfagok.guessError"></p>
+                <p class="error" x-show="$store.alfagok.guessError" x-text="$store.alfagok.guessError"></p>
 
-                <ul>
+                <ul class="guessesafter">
                     <template x-for="item in $store.alfagok.guessesAfter" :key="item">
                         <li x-text="item"></li>
                     </template>

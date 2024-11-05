@@ -24,13 +24,16 @@ a.title {
 }
 
 .instructions {
-    padding: 2rem 0;
+    padding: 2rem 0 0 0;
+}
+
+.guessesbefore {
+    padding-top: 2rem;
 }
 
 input[type="text"] {
     box-sizing: border-box;
     width: 100%;
-    padding: .5rem;
 }
 
 button {
@@ -38,7 +41,6 @@ button {
     color: #333;
 
     border: 0;
-    padding: .5rem;
     margin-top: .5rem;
 
     cursor: pointer;
@@ -48,4 +50,14 @@ button {
 
 ul {
     list-style-type: none;
+}
+
+.error {
+    background-color: #F00;
+    color: #FFF;
+}
+
+input[type="text"], button, .error {
+    padding: .5rem;
+    font-size: 1.5rem;
 }

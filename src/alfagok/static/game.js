@@ -79,7 +79,6 @@ document.addEventListener('alpine:init', () => {
                 this.winTime = now();
             }
         }
-
     }),
 
     Alpine.store('darkMode', {

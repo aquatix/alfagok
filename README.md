@@ -89,7 +89,7 @@ Environment="DICTIONARY_LIST=/srv/www_data/alfagok.example.com/dictionary.txt"
 Environment="STATIC_DIR=/srv/www/alfagok.example.com/alfagok/src/alfagok/static"
 Environment="TEMPLATE_DIR=/srv/www/alfagok.example.com/alfagok/src/alfagok/templates"
 
-ExecStart=/srv/www/alfagok.example.com/venv/bin/gunicorn -c /srv/www/_webconfig/sites/alfagok.diginaut.net/gunicorn_alfagok_conf.py alfagok.main:app
+ExecStart=/srv/www/alfagok.example.com/venv/bin/gunicorn -c /srv/www/_webconfig/sites/alfagok.example.com/gunicorn_alfagok_conf.py alfagok.main:app
 
 [Install]
 WantedBy=multi-user.target

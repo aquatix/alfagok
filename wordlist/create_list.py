@@ -1,6 +1,6 @@
 import random
 
-MIN_LENGTH = 5
+MIN_LENGTH = 4
 MAX_LENGTH = 10
 
 NUMBER_DAYS = 5 * 365
@@ -16,12 +16,12 @@ with open('basiswoorden-gekeurd.txt', 'r', encoding='utf-8') as wordfile:
         if word.isalpha() and word.lower() == word:
             # Word is valid for our dictionary
             dictionary_list.append(f'{word}\n')
-        if word.isalpha() and word.lower() == word and len(word) > MIN_LENGTH and len(word) <= MAX_LENGTH:
+        if word.isalpha() and word.lower() == word and len(word) >= MIN_LENGTH and len(word) <= MAX_LENGTH:
             # Word is 'fit' for our game
             result_list.append(f'{word}\n')
 
     # print(result_list)
-    print(f'words filtered: {len(result_list)} with length > {MIN_LENGTH} and <= {MAX_LENGTH}')
+    print(f'words filtered: {len(result_list)} with length >= {MIN_LENGTH} and <= {MAX_LENGTH}')
     print(f'words in dictionary: {len(dictionary_list)}')
 
     with open('filtered.txt', 'w', encoding='utf-8') as f:

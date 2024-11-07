@@ -12,7 +12,7 @@
 
         <div id="container" x-data="">
 
-            <a href="/" x-cloak class="title">alfagok</a> <span class="puzzleno">puzzel #<span x-text="$store.alfagok.gameID"></span> • <span id="nextgame"></span></span>
+            <a href="/" x-cloak class="title">alfagok</a> <span class="puzzleno">puzzel #<span x-text="$store.alfagok.gameID"></span> • <span id="nextgame"></span> • <span x-text="$store.alfagok.nrGuesses"></span> gokken</span>
 
             <div x-cloak class="instructions" x-show="$store.alfagok.guessesBefore.length === 0 && $store.alfagok.guessesAfter.length === 0">
                 <p>Raad het woord van de dag. Elke gok geeft een hint over waar het woord zich in het alfabet bevindt.</p>

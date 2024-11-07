@@ -48,7 +48,6 @@ document.addEventListener('alpine:init', () => {
                 return;
             }
 
-            this.nrGuesses++;
             if (this.startTime === null) {
                 console.log('Setting startTime to now');
                 this.startTime = new Date();
@@ -70,6 +69,7 @@ document.addEventListener('alpine:init', () => {
                 }
                 return;
             }
+            this.nrGuesses++;
             if (result.hint && result.hint === 'after') {
                 this.guessesBefore.push(this.guessValue);
                 this.guessesBefore.sort();

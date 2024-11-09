@@ -36,7 +36,8 @@ document.addEventListener('alpine:init', () => {
         async doGuess() {
             this.guessError = null;
 
-            this.guessValue = this.guessValue.toLowerCase();
+            /* Normalise on lowercase, and strip whitespace from begin and end, just in case */
+            this.guessValue = this.guessValue.toLowerCase().trim();
 
             if (this.guessValue === '') {
                 console.log('Nothing filled in');

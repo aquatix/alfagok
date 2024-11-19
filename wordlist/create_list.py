@@ -12,6 +12,10 @@ with open('wikiwoordenboek_basiswoorden.lst', 'r', encoding='utf-8') as wordfile
     wikiwoorden_words = wordfile.readlines()
     print(f'wikiwoorden basic list contains {len(wikiwoorden_words)} words')
 
+with open('scrabblewoorden.txt', 'r', encoding='utf-8') as wordfile:
+    scrabble_words = wordfile.readlines()
+    print(f'scrabblewoorden list contains {len(scrabble_words)} words')
+
 with open('basiswoorden-gekeurd.txt', 'r', encoding='utf-8') as wordfile:
     basis_words = wordfile.readlines()
     print(f'opentaal basic list contains {len(basis_words)} words')
@@ -33,7 +37,7 @@ print()
 all_words_count = 0
 dictionary_list = []
 result_list = []
-for word in wikiwoorden_words + basis_words + flexies_words:
+for word in wikiwoorden_words + scrabble_words + basis_words + flexies_words:
     all_words_count += 1
     word = word.strip()
     if word.isalpha() and word.lower() == word:
@@ -47,7 +51,8 @@ if USE_OPENTAAL:
     # Use basis_words if you want to use the big but difficult OpenTaal list
     source_words = basis_words
 else:
-    source_words = wikiwoorden_words
+    # Combine the basic words and the Scrabble word lists
+    source_words = wikiwoorden_words + scrabble_words
 
 for word in source_words:
     word = word.strip()
@@ -63,7 +68,7 @@ if USE_OPENTAAL:
     filtered_set = nl_set.difference(en_set)
     filtered_list = sorted(list(filtered_set), key=str.casefold)
 else:
-    filtered_list = sorted(list(wikiwoorden_words), key=str.casefold)
+    filtered_list = sorted(list(set(result_list)), key=str.casefold)
 
 print(f'words total: {all_words_count}')
 print(f'words in dictionary: {len(dictionary_list)}')

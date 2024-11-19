@@ -1,3 +1,4 @@
+import os.path
 import random
 
 MIN_LENGTH = 4
@@ -12,9 +13,13 @@ with open('wikiwoordenboek_basiswoorden.lst', 'r', encoding='utf-8') as wordfile
     wikiwoorden_words = wordfile.readlines()
     print(f'wikiwoorden basic list contains {len(wikiwoorden_words)} words')
 
-with open('scrabblewoorden.txt', 'r', encoding='utf-8') as wordfile:
-    scrabble_words = wordfile.readlines()
-    print(f'scrabblewoorden list contains {len(scrabble_words)} words')
+scrabble_words = []
+if os.path.isfile('scrabblewoorden.txt'):
+    with open('scrabblewoorden.txt', 'r', encoding='utf-8') as wordfile:
+        scrabble_words = wordfile.readlines()
+        print(f'scrabblewoorden list contains {len(scrabble_words)} words')
+else:
+    print('scrabblewoorden.txt not found, skipped')
 
 with open('basiswoorden-gekeurd.txt', 'r', encoding='utf-8') as wordfile:
     basis_words = wordfile.readlines()

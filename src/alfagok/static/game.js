@@ -1,5 +1,8 @@
 document.addEventListener('alpine:init', () => {
     Alpine.store('alfagok', {
+        // isLocalStorageAvailable: this.testLocalStorage(),
+        isLocalStorageAvailable: false,
+
         /* Main alfagok application, state etc */
         gameID: 0,
 
@@ -7,6 +10,7 @@ document.addEventListener('alpine:init', () => {
 
         winTime: null,
         startTime: null,
+        gaveUpTime: null, // not implemented yet
 
         nrGuesses: 0,
         guessesBefore: [],
@@ -88,6 +92,90 @@ document.addEventListener('alpine:init', () => {
                 this.resultGuesses = '🤔 '+ this.nrGuesses + ' gokken';
                 this.resultTimeTaken = '⏱️ ' + getFormattedTime(this.winTime - this.startTime);
             }
+        },
+        setEmptyGameState() {
+            this.winTime = null;
+            this.startTime = null;
+
+            this.nrGuesses = 0;
+            this.guessesBefore = [];
+            this.guessesAfter = [];
+
+            this.guessValue = '';
+
+            this.guessError = '';
+
+            this.resultGameID = '';
+            this.resultGuesses = '';
+            this.resultTimeTaken = '';
+
+            this.getGameID();
+        },
+        // # Local Storage Persistence
+        storeGameState() {
+        },
+        getStoredGameState() {
+            if (!this.isLocalStorageAvailable) return undefined;
+
+            const savedGameJson = localStorage.getItem('saveGame');
+            try {
+                return savedGameJSON && JSON.parse(savedGameJSON);
+            } catch (e) {
+                localStorage.removeItem('saveGame');
+            }
+            return undefined;
+        },
+        loadGameState() {
+            const savedGame = this.getStoredGameState();
+
+            if (!savedGame || !savedGame.gameID || (savedGame.gameID !== this.gameID)) {
+                this.setEmptyGameState();
+                return;
+            }
+            if (!savedGame || !savedGame.startTime) {
+                this.setEmptyGameState();
+                return;
+            }
+            const startTime = new Date(savedGame.startTime);
+            if (!isPlayDateToday(app.playDate)) {
+                this.setEmptyGameState();
+                return;
+            }
+            const savedGameForToday = getDOY(startTime) === getDOY(now());
+            if (!savedGameForToday) {
+                this.resetSavedGames();
+                this.setEmptyGameState();
+                return;
+            }
+            const {
+                winTime,
+                guessesBefore,
+                guessesAfter,
+                guessValue,
+            } = savedGame;
+            const gaveUpTime = null; // to be implemented
+            this.startTime = startTime;
+            this.winTime = (winTime && new Date(winTime)) || null;
+            this.guessesBefore = guessesBefore || [];
+            this.guessesAfter = guessesAfter || [];
+            if (gaveUpTime || this.winTime) {
+                this.guessValue = guessValue;
+            }
+        },
+        resetSavedGames() {
+            localStorage.removeItem('saveGame');
+        },
+        testLocalStorage() {
+            // stolen from https://stackoverflow.com/questions/16427636/check-if-localstorage-is-available
+            const test = 'test';
+            try {
+                localStorage.setItem(test, test);
+                localStorage.removeItem(test);
+                this.isLocalStorageAvailable = true;
+            } catch (e) {
+                this.isLocalStorageAvailable = false;
+            }
+            console.log('Local storage is available? ' + this.isLocalStorageAvailable);
         }
     }),
 
@@ -177,4 +265,5 @@ go();
 document.addEventListener('alpine:initialized', () => {
     /* On AlpineJS completely loaded, do all this */
     Alpine.store('alfagok').getGameID();
+    Alpine.store('alfagok').testLocalStorage();
 })

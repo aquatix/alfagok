@@ -37,6 +37,10 @@ a.title {
     color: #CCC;;
 }
 
+.guessesheading, .guessesbefore, .guessesafter {
+    text-align: center;
+}
+
 input[type="text"] {
     box-sizing: border-box;
     width: 100%;

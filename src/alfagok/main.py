@@ -1,6 +1,6 @@
 """Main alfagok API application."""
 import logging
-from datetime import date
+from datetime import date, datetime, timezone
 from typing import Union
 
 from fastapi import FastAPI, Request
@@ -51,7 +51,7 @@ if settings.debug:
 
 def get_game_id():
     """Calculate the index for the game/word we are handling today."""
-    today = date.today()
+    today = datetime.now(timezone.utc).date()
     # Calculate the amount of days since the start of the games so we know which word is used today
     return (today - settings.start_date).days
 
@@ -71,7 +71,7 @@ async def index(request: Request):
 
 @app.get('/api/game')
 def what_game():
-    """Handle incoming guess."""
+    """Which game is currently on?"""
     return {'game': get_game_id()}
 
 

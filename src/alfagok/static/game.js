@@ -2,6 +2,7 @@ document.addEventListener('alpine:init', () => {
     Alpine.store('alfagok', {
         // isLocalStorageAvailable: this.testLocalStorage(),
         isLocalStorageAvailable: false,
+        savedGameKey: 'saveGame',
 
         /* Main alfagok application, state etc */
         gameID: 0,
@@ -114,15 +115,21 @@ document.addEventListener('alpine:init', () => {
         },
         // # Local Storage Persistence
         storeGameState() {
+            localStorage.setItem(this.savedGameKey, JSON.stringify({
+                startTime,
+                winTime,
+                gaveUpTime,
+                guessesBefore,
+            }));
         },
         getStoredGameState() {
             if (!this.isLocalStorageAvailable) return undefined;
 
-            const savedGameJson = localStorage.getItem('saveGame');
+            const savedGameJson = localStorage.getItem(this.savedGameKey);
             try {
                 return savedGameJson && JSON.parse(savedGameJson);
             } catch (e) {
-                localStorage.removeItem('saveGame');
+                localStorage.removeItem(this.savedGameKey);
             }
             return undefined;
         },
@@ -164,7 +171,7 @@ document.addEventListener('alpine:init', () => {
             }
         },
             resetSavedGames() {
-            localStorage.removeItem('saveGame');
+            localStorage.removeItem(this.savedGameKey);
         },
         testLocalStorage() {
             // stolen from https://stackoverflow.com/questions/16427636/check-if-localstorage-is-available
@@ -178,6 +185,7 @@ document.addEventListener('alpine:init', () => {
             }
             console.log('Local storage is available? ' + this.isLocalStorageAvailable);
         },
+        // # Countdown timer
         getFormattedTime(milliseconds) {
             if (!Number.isInteger(milliseconds)) {
                 return '';
@@ -215,7 +223,7 @@ document.addEventListener('alpine:init', () => {
             let secondsRemain = Math.floor(diff%60);
             nextgame.innerHTML   = '<span class="nextgame">'+addZero(hoursRemain)+':'+addZero(minutesRemain)+':'+addZero(secondsRemain)+' over</span>';
         }
-    }),
+    })
 
     Alpine.store('darkMode', {
         /* Different Alpine app, dark mode settings for the game */

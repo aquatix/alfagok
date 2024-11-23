@@ -120,7 +120,7 @@ document.addEventListener('alpine:init', () => {
 
             const savedGameJson = localStorage.getItem('saveGame');
             try {
-                return savedGameJSON && JSON.parse(savedGameJSON);
+                return savedGameJson && JSON.parse(savedGameJson);
             } catch (e) {
                 localStorage.removeItem('saveGame');
             }
@@ -162,6 +162,21 @@ document.addEventListener('alpine:init', () => {
             if (gaveUpTime || this.winTime) {
                 this.guessValue = guessValue;
             }
+        },
+            resetSavedGames() {
+            localStorage.removeItem('saveGame');
+        },
+        testLocalStorage() {
+            // stolen from https://stackoverflow.com/questions/16427636/check-if-localstorage-is-available
+            const test = 'test';
+            try {
+                localStorage.setItem(test, test);
+                localStorage.removeItem(test);
+                this.isLocalStorageAvailable = true;
+            } catch (e) {
+                this.isLocalStorageAvailable = false;
+            }
+            console.log('Local storage is available? ' + this.isLocalStorageAvailable);
         },
         getFormattedTime(milliseconds) {
             if (!Number.isInteger(milliseconds)) {

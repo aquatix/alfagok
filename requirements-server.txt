@@ -50,11 +50,11 @@ mdurl==0.1.2
     # via markdown-it-py
 packaging==24.2
     # via gunicorn
-pydantic==2.9.2
+pydantic==2.10.1
     # via
     #   fastapi
     #   pydantic-settings
-pydantic-core==2.23.4
+pydantic-core==2.27.1
     # via pydantic
 pydantic-settings==2.6.1
     # via -r requirements.in
@@ -86,7 +86,7 @@ typing-extensions==4.12.2
     #   pydantic
     #   pydantic-core
     #   typer
-uvicorn==0.32.0
+uvicorn==0.32.1
     # via
     #   fastapi
     #   fastapi-cli

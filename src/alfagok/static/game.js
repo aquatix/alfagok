@@ -5,6 +5,7 @@ document.addEventListener('alpine:init', () => {
 
         /* Main alfagok application, state etc */
         gameID: 0,
+        countingDown: '',
 
         loading: false,
 
@@ -162,20 +163,42 @@ document.addEventListener('alpine:init', () => {
                 this.guessValue = guessValue;
             }
         },
-        resetSavedGames() {
-            localStorage.removeItem('saveGame');
-        },
-        testLocalStorage() {
-            // stolen from https://stackoverflow.com/questions/16427636/check-if-localstorage-is-available
-            const test = 'test';
-            try {
-                localStorage.setItem(test, test);
-                localStorage.removeItem(test);
-                this.isLocalStorageAvailable = true;
-            } catch (e) {
-                this.isLocalStorageAvailable = false;
+        getFormattedTime(milliseconds) {
+            if (!Number.isInteger(milliseconds)) {
+                return '';
             }
-            console.log('Local storage is available? ' + this.isLocalStorageAvailable);
+            let seconds = Math.round((milliseconds) / 1000);
+            const hours = Math.floor(seconds / 3600);
+            seconds %= 3600;
+            const minutes = Math.floor(seconds / 60);
+            seconds %= 60;
+
+            const formattedTime = [];
+            if (hours) {
+                formattedTime.push(`${hours}u`);
+            }
+            if (minutes) {
+                formattedTime.push(`${minutes}m`);
+            }
+            if (seconds) {
+                formattedTime.push(`${seconds}s`);
+            }
+
+            return formattedTime.join(' ') || '0s';
+        },
+        addZero(num){
+            if(num <=9) return '0'+num;
+            else return num;
+        },
+        countDownTimer(){
+            let nextgame = document.getElementById('nextgame');
+            let now = new Date();
+            let midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 0, 0, 0);
+            let diff =  Math.floor((midnight - now)/1000);
+            let hoursRemain   = Math.floor(diff/(60*60));
+            let minutesRemain = Math.floor((diff-hoursRemain*60*60)/60);
+            let secondsRemain = Math.floor(diff%60);
+            nextgame.innerHTML   = '<span class="nextgame">'+addZero(hoursRemain)+':'+addZero(minutesRemain)+':'+addZero(secondsRemain)+' over</span>';
         }
     }),
 
@@ -223,7 +246,7 @@ function getFormattedTime(milliseconds) {
 
 /* Clipboard stuff **/
 
-var clip = new Clipboard('.copy');
+let clip = new ClipboardJS('.copy');
 
 clip.on("success", function(e) {
   document.getElementById('copyresults').innerHTML = '<p style="font-size:var(--small);opacity:50%">Gekopieerd! Deel je resultaat.</p>';
@@ -238,23 +261,23 @@ clip.on("error", function() {
 /* Game timer, original from alphaguess.com **/
 
 function go() {
-  window.timerID = window.setInterval(timer, 0);
+    window.timerID = window.setInterval(timer, 0);
 }
 
 function timer(){
-  var nextgame = document.getElementById('nextgame');
-  var now = new Date();
-  var midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 0, 0, 0);
-  var diff =  Math.floor((midnight - now)/1000);
-  var hoursRemain   = Math.floor(diff/(60*60));
-  var minutesRemain = Math.floor((diff-hoursRemain*60*60)/60);
-  var secondsRemain = Math.floor(diff%60);
-  nextgame.innerHTML   = '<span class="nextgame">'+addZero(hoursRemain)+':'+addZero(minutesRemain)+':'+addZero(secondsRemain)+' over</span>';
+    let nextgame = document.getElementById('nextgame');
+    let now = new Date();
+    let midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 0, 0, 0);
+    let diff =  Math.floor((midnight - now)/1000);
+    let hoursRemain   = Math.floor(diff/(60*60));
+    let minutesRemain = Math.floor((diff-hoursRemain*60*60)/60);
+    let secondsRemain = Math.floor(diff%60);
+    nextgame.innerHTML   = '<span class="nextgame">'+addZero(hoursRemain)+':'+addZero(minutesRemain)+':'+addZero(secondsRemain)+' over</span>';
 }
 
 function addZero(num){
-  if(num <=9) return '0'+num;
-  else return num;
+    if(num <=9) return '0'+num;
+    else return num;
 }
 
 go();

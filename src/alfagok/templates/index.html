@@ -17,58 +17,54 @@
 
         <div id="container" x-data="">
 
-            <a href="/" x-cloak class="title">alfagok</a> <span class="puzzleno">puzzel #<span x-text="$store.alfagok.gameID"></span> • <span id="nextgame"></span> • <span x-text="$store.alfagok.nrGuesses"></span> gokken</span>
+            <a href="/" x-cloak class="title">alfagok</a> <span class="puzzleno">puzzel #<span x-text="$store.alfagok.gameID"></span> • <span id="nextgame"></span> | <span x-text="$store.alfagok.countingDown" • <span x-text="$store.alfagok.nrGuesses"></span> gokken</span>
 
             <div x-cloak class="instructions" x-show="$store.alfagok.guessesBefore.length === 0 && $store.alfagok.guessesAfter.length === 0">
                 <p>Raad het woord van de dag. Elke gok geeft een hint over waar het woord zich in het alfabet bevindt.</p>
                 <p x-show="$store.alfagok.isLocalStorageAvailable"></p>
             </div>
 
-            <center>
+            <p class="guessesheading" x-cloak x-show="$store.alfagok.guessesBefore.length">Het woord van de dag komt <em>na</em>:</p>
+            <ul class="guessesbefore">
+                <template x-for="item in $store.alfagok.guessesBefore" :key="item">
+                    <li x-text="item"></li>
+                </template>
+            </ul>
 
-                <p class="guessesheading" x-cloak x-show="$store.alfagok.guessesBefore.length">Het woord van de dag komt <em>na</em>:</p>
-                <ul class="guessesbefore">
-                    <template x-for="item in $store.alfagok.guessesBefore" :key="item">
-                        <li x-text="item"></li>
-                    </template>
-                </ul>
-
-                <div x-show="!$store.alfagok.winTime">
-                    <input type="text" autocomplete="new-password" autocorrect="off" x-model="$store.alfagok.guessValue" @keyup.enter="$store.alfagok.doGuess()">
+            <div x-show="!$store.alfagok.winTime">
+                <input type="text" autocomplete="new-password" autocorrect="off" x-model="$store.alfagok.guessValue" @keyup.enter="$store.alfagok.doGuess()">
 {#                <p x-cloak>Je huidige gok is: <span x-text="$store.alfagok.guessValue"></span></p>#}
-                    <button @click="$store.alfagok.doGuess()">Doe een gok</button>
-                    <p class="error" x-cloak x-show="$store.alfagok.guessError" x-text="$store.alfagok.guessError"></p>
-                </div>
+                <button @click="$store.alfagok.doGuess()">Doe een gok</button>
+                <p class="error" x-cloak x-show="$store.alfagok.guessError" x-text="$store.alfagok.guessError"></p>
+            </div>
 
-                <div x-cloak x-show="$store.alfagok.winTime" class="win">
-                    <h3><b>Je hebt hem! 🎉</b></h3>
-                    <p>Het woord van vandaag was <b x-text="$store.alfagok.guessValue"></b>.</p>
-                    <div id="stats">
-                        <div id="results">
-                            <p><b x-text="$store.alfagok.resultGameID"></b></p>
-                            <p x-text="$store.alfagok.resultGuesses"></p>
-                            <p x-text="$store.alfagok.resultTimeTaken"></p>
-                            <p>🔗 <span style="color:var(--blue)">alfagok.diginaut.net</span></p>
-                        </div>
+            <div x-cloak x-show="$store.alfagok.winTime" class="win">
+                <h3><b>Je hebt hem! 🎉</b></h3>
+                <p>Het woord van vandaag was <b x-text="$store.alfagok.guessValue"></b>.</p>
+                <div id="stats">
+                    <div id="results">
+                        <p><b x-text="$store.alfagok.resultGameID"></b></p>
+                        <p x-text="$store.alfagok.resultGuesses"></p>
+                        <p x-text="$store.alfagok.resultTimeTaken"></p>
+                        <p>🔗 <span style="color:var(--blue)">alfagok.diginaut.net</span></p>
                     </div>
-                    <div id="copyresults"></div>
-                    <button class="copy" data-clipboard-target="#results">
-                          Tik om te kopi&euml;ren en te delen ❤️
-                    </button>
                 </div>
+                <div id="copyresults"></div>
+                <button class="copy" data-clipboard-target="#results">
+                      Tik om te kopi&euml;ren en te delen ❤️
+                </button>
+            </div>
 
-                <p class="guessesheading" x-cloak x-show="$store.alfagok.guessesAfter.length">Het woord van de dag komt <em>voor</em>:</p>
-                <ul class="guessesafter">
-                    <template x-for="item in $store.alfagok.guessesAfter" :key="item">
-                        <li x-text="item"></li>
-                    </template>
-                </ul>
-
-            </center>
+            <p class="guessesheading" x-cloak x-show="$store.alfagok.guessesAfter.length">Het woord van de dag komt <em>voor</em>:</p>
+            <ul class="guessesafter">
+                <template x-for="item in $store.alfagok.guessesAfter" :key="item">
+                    <li x-text="item"></li>
+                </template>
+            </ul>
 
         </div>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js" rel=preload></script>
+        <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
         <script src="/static/game.js"></script>
 {#
         <button x-data @click="$store.darkMode.toggle()">Toggle Dark Mode</button>

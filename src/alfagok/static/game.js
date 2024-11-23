@@ -2,6 +2,7 @@ document.addEventListener('alpine:init', () => {
     Alpine.store('alfagok', {
         /* Main alfagok application, state etc */
         gameID: 0,
+        countingDown: '',
 
         loading: false,
 
@@ -88,7 +89,47 @@ document.addEventListener('alpine:init', () => {
                 this.resultGuesses = '🤔 '+ this.nrGuesses + ' gokken';
                 this.resultTimeTaken = '⏱️ ' + getFormattedTime(this.winTime - this.startTime);
             }
+        },
+
+
+        getFormattedTime(milliseconds) {
+            if (!Number.isInteger(milliseconds)) {
+                return '';
+            }
+            let seconds = Math.round((milliseconds) / 1000);
+            const hours = Math.floor(seconds / 3600);
+            seconds %= 3600;
+            const minutes = Math.floor(seconds / 60);
+            seconds %= 60;
+
+            const formattedTime = [];
+            if (hours) {
+                formattedTime.push(`${hours}u`);
+            }
+            if (minutes) {
+                formattedTime.push(`${minutes}m`);
+            }
+            if (seconds) {
+                formattedTime.push(`${seconds}s`);
+            }
+
+            return formattedTime.join(' ') || '0s';
+        },
+        addZero(num){
+            if(num <=9) return '0'+num;
+            else return num;
+        },
+        countDownTimer(){
+            let nextgame = document.getElementById('nextgame');
+            let now = new Date();
+            let midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 0, 0, 0);
+            let diff =  Math.floor((midnight - now)/1000);
+            let hoursRemain   = Math.floor(diff/(60*60));
+            let minutesRemain = Math.floor((diff-hoursRemain*60*60)/60);
+            let secondsRemain = Math.floor(diff%60);
+            nextgame.innerHTML   = '<span class="nextgame">'+addZero(hoursRemain)+':'+addZero(minutesRemain)+':'+addZero(secondsRemain)+' over</span>';
         }
+
     }),
 
     Alpine.store('darkMode', {

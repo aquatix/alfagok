@@ -56,6 +56,14 @@ def get_game_id():
     return (today - settings.start_date).days
 
 
+def get_game_deadline():
+    """Calculate the amount of time left for the current game."""
+    this_moment = datetime.now(timezone.utc)
+    midnight = datetime.now(timezone.utc).replace(hour=23, minute=59, second=59, microsecond=0)
+    # Calculate the amount of time left till midnight (and the start of the next game)
+    return midnight - this_moment
+
+
 def is_valid_dictionary_word(word: str) -> bool:
     """Verify if `word` is in the dictionary provided."""
     # Either we: [ ] strip all the endlines during file load, or [x] use the endline to search here
@@ -72,7 +80,7 @@ async def index(request: Request):
 @app.get('/api/game')
 def what_game():
     """Which game is currently on?"""
-    return {'game': get_game_id()}
+    return {'game': get_game_id(), 'deadline': get_game_deadline()}
 
 
 @app.get('/api/guess/{word}')

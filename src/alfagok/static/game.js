@@ -135,7 +135,7 @@ function getFormattedTime(milliseconds) {
 
 /* Clipboard stuff **/
 
-let clip = new Clipboard('.copy');
+let clip = new ClipboardJS('.copy');
 
 clip.on("success", function(e) {
   document.getElementById('copyresults').innerHTML = '<p style="font-size:var(--small);opacity:50%">Gekopieerd! Deel je resultaat.</p>';

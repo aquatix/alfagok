@@ -35,6 +35,9 @@ document.addEventListener('alpine:init', () => {
             console.log(result);
             this.loading = false;
             if (result.game) {
+                if (this.gameID !== result.game) {
+                    this.setEmptyGameState();
+                }
                 return this.gameID = result.game;
             }
         },
@@ -115,10 +118,6 @@ document.addEventListener('alpine:init', () => {
             this.resultTimeTaken = '';
 
             this.getGameID();
-        },
-        // # Local Storage Persistence
-        resetSavedGames() {
-            localStorage.removeItem(this.savedGameKey);
         },
         // # Countdown timer
         getFormattedTime(milliseconds) {

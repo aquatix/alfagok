@@ -11,6 +11,9 @@ from pydantic import DirectoryPath, FilePath
 from pydantic_settings import BaseSettings
 
 
+VERSION = '0.3.0'
+
+
 class Settings(BaseSettings):
     """Configuration needed for alfagok to find its word list, using environment variables."""
 
@@ -74,7 +77,7 @@ def is_valid_dictionary_word(word: str) -> bool:
 async def index(request: Request):
     """Generate the main HTML page of the game."""
     language = 'nl'
-    return templates.TemplateResponse(request=request, name='index.html', context={'language': language})
+    return templates.TemplateResponse(request=request, name='index.html', context={'language': language, 'version': VERSION})
 
 
 @app.get('/api/game')
@@ -107,7 +110,7 @@ def handle_guess(word: Union[str, None] = None):
 
 @app.get('/api/answer/{item_id}')
 def read_item(item_id: int):
-    """Get the word for the current game."""
+    """Get the word for the game with ID `item_id`."""
     current_game_id = get_game_id()
     if item_id > current_game_id:
         raise HTTPException(status_code=403, detail='No peaking!')

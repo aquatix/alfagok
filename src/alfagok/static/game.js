@@ -110,7 +110,6 @@ document.addEventListener('alpine:init', () => {
                 this.resultGuesses = '🤔 '+ this.nrGuesses + ' gokken';
                 let winTimeDate = new Date(this.winTime);
                 let startTimeDate = new Date(this.startTime);
-                // this.resultTimeTaken = '⏱️ ' + getFormattedTime(this.winTime - this.startTime);
                 this.resultTimeTaken = '⏱️ ' + this.getFormattedTime(winTimeDate - startTimeDate);
             }
         },

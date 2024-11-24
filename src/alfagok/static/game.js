@@ -5,26 +5,26 @@ document.addEventListener('alpine:init', () => {
         savedGameKey: 'saveGame',
 
         /* Main alfagok application, state etc */
-        gameID: 0,
+        gameID: Alpine.$persist(0).as('gameID'),
         countingDown: '',
 
         loading: false,
 
-        winTime: null,
-        startTime: null,
-        gaveUpTime: null, // not implemented yet
+        winTime: Alpine.$persist(null).as('winTime'),
+        startTime: Alpine.$persist(null).as('startTime'),
+        gaveUpTime: Alpine.$persist(null).as('gaveUpTime'), // not implemented yet
 
-        nrGuesses: 0,
-        guessesBefore: [],
-        guessesAfter: [],
+        nrGuesses: Alpine.$persist(0).as('nrGuesses'),
+        guessesBefore: Alpine.$persist([]).as('guessesBefore'),
+        guessesAfter: Alpine.$persist([]).as('guessesAfter'),
 
-        guessValue: '',
+        guessValue: Alpine.$persist('').as('guessValue'),
 
         guessError: '',
 
-        resultGameID: '',
-        resultGuesses: '',
-        resultTimeTaken: '',
+        resultGameID: Alpine.$persist('').as('resultGameID'),
+        resultGuesses: Alpine.$persist('').as('resultGuesses'),
+        resultTimeTaken: Alpine.$persist('').as('resultTimeTaken'),
 
         async getGameID() {
             /* Get the game number from the backend */
@@ -115,12 +115,12 @@ document.addEventListener('alpine:init', () => {
         },
         // # Local Storage Persistence
         storeGameState() {
-            localStorage.setItem(this.savedGameKey, JSON.stringify({
-                startTime,
-                winTime,
-                gaveUpTime,
-                guessesBefore,
-            }));
+            // localStorage.setItem(this.savedGameKey, JSON.stringify({
+            //     startTime,
+            //     winTime,
+            //     gaveUpTime,
+            //     guessesBefore,
+            // }));
         },
         getStoredGameState() {
             if (!this.isLocalStorageAvailable) return undefined;

@@ -1,25 +1,30 @@
 document.addEventListener('alpine:init', () => {
     Alpine.store('alfagok', {
+        // isLocalStorageAvailable: this.testLocalStorage(),
+        isLocalStorageAvailable: false,
+        savedGameKey: 'saveGame',
+
         /* Main alfagok application, state etc */
-        gameID: 0,
+        gameID: Alpine.$persist(0).as('gameID'),
         countingDown: '',
 
         loading: false,
 
-        winTime: null,
-        startTime: null,
+        winTime: Alpine.$persist(null).as('winTime'),
+        startTime: Alpine.$persist(null).as('startTime'),
+        gaveUpTime: Alpine.$persist(null).as('gaveUpTime'), // not implemented yet
 
-        nrGuesses: 0,
-        guessesBefore: [],
-        guessesAfter: [],
+        nrGuesses: Alpine.$persist(0).as('nrGuesses'),
+        guessesBefore: Alpine.$persist([]).as('guessesBefore'),
+        guessesAfter: Alpine.$persist([]).as('guessesAfter'),
 
-        guessValue: '',
+        guessValue: Alpine.$persist('').as('guessValue'),
 
         guessError: '',
 
-        resultGameID: '',
-        resultGuesses: '',
-        resultTimeTaken: '',
+        resultGameID: Alpine.$persist('').as('resultGameID'),
+        resultGuesses: Alpine.$persist('').as('resultGuesses'),
+        resultTimeTaken: Alpine.$persist('').as('resultTimeTaken'),
 
         async getGameID() {
             /* Get the game number from the backend */
@@ -30,6 +35,9 @@ document.addEventListener('alpine:init', () => {
             console.log(result);
             this.loading = false;
             if (result.game) {
+                if (this.gameID !== result.game) {
+                    this.setEmptyGameState();
+                }
                 return this.gameID = result.game;
             }
         },
@@ -87,11 +95,31 @@ document.addEventListener('alpine:init', () => {
                 this.winTime = new Date();
                 this.resultGameID = '🧩 Puzzel #' + this.gameID;
                 this.resultGuesses = '🤔 '+ this.nrGuesses + ' gokken';
-                this.resultTimeTaken = '⏱️ ' + getFormattedTime(this.winTime - this.startTime);
+                let winTimeDate = new Date(this.winTime);
+                let startTimeDate = new Date(this.startTime);
+                // this.resultTimeTaken = '⏱️ ' + getFormattedTime(this.winTime - this.startTime);
+                this.resultTimeTaken = '⏱️ ' + getFormattedTime(winTimeDate - startTimeDate);
             }
         },
+        setEmptyGameState() {
+            this.winTime = null;
+            this.startTime = null;
 
+            this.nrGuesses = 0;
+            this.guessesBefore = [];
+            this.guessesAfter = [];
 
+            this.guessValue = '';
+
+            this.guessError = '';
+
+            this.resultGameID = '';
+            this.resultGuesses = '';
+            this.resultTimeTaken = '';
+
+            this.getGameID();
+        },
+        // # Countdown timer
         getFormattedTime(milliseconds) {
             if (!Number.isInteger(milliseconds)) {
                 return '';
@@ -129,8 +157,7 @@ document.addEventListener('alpine:init', () => {
             let secondsRemain = Math.floor(diff%60);
             nextgame.innerHTML   = '<span class="nextgame">'+addZero(hoursRemain)+':'+addZero(minutesRemain)+':'+addZero(secondsRemain)+' over</span>';
         }
-
-    }),
+    })
 
     Alpine.store('darkMode', {
         /* Different Alpine app, dark mode settings for the game */

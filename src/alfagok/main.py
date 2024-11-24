@@ -3,7 +3,7 @@ import logging
 from datetime import date, datetime, timezone
 from typing import Union
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -106,7 +106,10 @@ def handle_guess(word: Union[str, None] = None):
 
 
 @app.get('/api/answer/{item_id}')
-def read_item(item_id: int, guess: Union[str, None] = None):
+def read_item(item_id: int):
     """Get the word for the current game."""
+    current_game_id = get_game_id()
+    if item_id > current_game_id:
+        raise HTTPException(status_code=403, detail='No peaking!')
     word = words[item_id].strip()
-    return {'item_id': item_id, 'guess': guess, 'word': word}
+    return {'item_id': item_id, 'word': word}

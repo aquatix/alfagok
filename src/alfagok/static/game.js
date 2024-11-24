@@ -24,9 +24,9 @@ document.addEventListener('alpine:init', () => {
         resultGuesses: Alpine.$persist('').as('resultGuesses'),
         resultTimeTaken: Alpine.$persist('').as('resultTimeTaken'),
 
-        init() {
+        async init() {
             /** Initialise the application after loading */
-            this.getGameID();
+            await this.getGameID();
             setInterval(() => {
                 // Update counter to next game (midnight UTC, fetched from API) every second
                 this.countDownTimer();
@@ -162,6 +162,7 @@ document.addEventListener('alpine:init', () => {
         },
         countDownTimer(){
             /** Update counter to next game (midnight UTC, fetched from API) */
+            if (this.gameFetchedAt === null) { return; }
             let now = new Date();
             let gameDataFetched = new Date(this.gameFetchedAt);
             let nextGameStart = gameDataFetched.setSeconds(gameDataFetched.getSeconds() + this.nextGameIn);

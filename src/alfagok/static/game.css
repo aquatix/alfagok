@@ -33,8 +33,8 @@ a.title {
     padding: 2rem 0 0 0;
 }
 
-.guessesheading {
-    color: #CCC;;
+.guessesheading, .copied {
+    color: #CCC;
 }
 
 .guessesheading, .guessesbefore, .guessesafter {

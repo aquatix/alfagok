@@ -24,6 +24,8 @@ document.addEventListener('alpine:init', () => {
         resultGuesses: Alpine.$persist('').as('resultGuesses'),
         resultTimeTaken: Alpine.$persist('').as('resultTimeTaken'),
 
+        resultsCopied: false,
+
         async init() {
             /** Initialise the application after loading */
             await this.getGameID();
@@ -189,23 +191,6 @@ document.addEventListener('alpine:init', () => {
     })
 
 });
-
-
-/* Clipboard stuff **/
-
-let clip = new ClipboardJS('.copy');
-
-clip.on("success", function(e) {
-  document.getElementById('copyresults').innerHTML = '<p style="font-size:var(--small);opacity:50%">Gekopieerd! Deel je resultaat.</p>';
-  e.clearSelection();
-});
-
-clip.on("error", function() {
-  document.getElementById('copyresults').innerHTML = '<p style="font-size:var(--small);opacity:50%">Fout. Graag handmatig kopi&euml;ren...</p>';
-});
-
-
-/* Get current gameID etc **/
 
 // document.addEventListener('alpine:initialized', () => {
     /* On AlpineJS completely loaded, do all this */

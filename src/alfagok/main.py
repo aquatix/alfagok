@@ -2,6 +2,7 @@
 import logging
 from datetime import date, datetime, timezone
 from typing import Union
+from zoneinfo import ZoneInfo
 
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import HTMLResponse
@@ -11,7 +12,9 @@ from pydantic import DirectoryPath, FilePath
 from pydantic_settings import BaseSettings
 
 
-VERSION = '0.3.0'
+VERSION = '0.3.1'
+
+AMSTERDAM = ZoneInfo('Europe/Amsterdam')
 
 
 class Settings(BaseSettings):
@@ -54,15 +57,15 @@ if settings.debug:
 
 def get_game_id():
     """Calculate the index for the game/word we are handling today."""
-    today = datetime.now(timezone.utc).date()
+    today = datetime.now(tz=AMSTERDAM).date()
     # Calculate the amount of days since the start of the games so we know which word is used today
     return (today - settings.start_date).days
 
 
 def get_game_deadline():
     """Calculate the amount of time left for the current game."""
-    this_moment = datetime.now(timezone.utc)
-    midnight = datetime.now(timezone.utc).replace(hour=23, minute=59, second=59, microsecond=0)
+    this_moment = datetime.now(tz=AMSTERDAM)
+    midnight = datetime.now(tz=AMSTERDAM).replace(hour=23, minute=59, second=59, microsecond=0)
     # Calculate the amount of time left till midnight (and the start of the next game)
     return midnight - this_moment
 

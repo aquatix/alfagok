@@ -39,6 +39,7 @@ a.title {
 
 .guessesheading, .guessesbefore, .guessesafter {
     text-align: center;
+    clear: both;
 }
 
 input[type="text"] {

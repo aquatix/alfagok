@@ -30,7 +30,7 @@ document.addEventListener('alpine:init', () => {
             /** Initialise the application after loading */
             await this.getGameID();
             setInterval(() => {
-                // Update counter to next game (midnight UTC, fetched from API) every second
+                // Update counter to the next game (midnight UTC, fetched from API) every second
                 this.countDownTimer();
             }, 1000);
         },
@@ -58,7 +58,7 @@ document.addEventListener('alpine:init', () => {
             /** Handle the newly entered guess */
             this.guessError = null;
 
-            /* Normalise on lowercase, and strip whitespace from begin and end, just in case */
+            /* Normalise on lowercase, and strip whitespace from start and end, just in case */
             this.guessValue = this.guessValue.toLowerCase().trim();
 
             if (this.guessValue === '') {
@@ -132,7 +132,7 @@ document.addEventListener('alpine:init', () => {
             this.resultTimeTaken = '';
         },
         getFormattedTime(milliseconds) {
-            /** Nicely format time for 'time played' */
+            /** Format the time for 'time played' nicely */
             if (!Number.isInteger(milliseconds)) {
                 return '';
             }
@@ -195,3 +195,10 @@ document.addEventListener('alpine:init', () => {
     /* On AlpineJS completely loaded, do all this */
     // Alpine.store('alfagok').getGameID();
 // })
+
+document.onvisibilitychange = () => {
+  if (!document.hidden) {
+      /* Tab/window is shown again, possibly after a long time, check if game is still current, otherwise re-load */
+      Alpine.store('alfagok').getGameID();
+  }
+};

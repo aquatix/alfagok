@@ -1,2 +1,5 @@
-fastapi[standard]
+fastapi[standard-no-fastapi-cloud-cli]
 pydantic-settings
+
+# Normalise strings so we can compare without accents
+unidecode

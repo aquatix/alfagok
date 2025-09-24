@@ -10,9 +10,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import DirectoryPath, FilePath
 from pydantic_settings import BaseSettings
+from unidecode import unidecode
 
-
-VERSION = '0.3.2'
+VERSION = '0.3.3'
 
 AMSTERDAM = ZoneInfo('Europe/Amsterdam')
 
@@ -100,9 +100,9 @@ def handle_guess(word: Union[str, None] = None):
         return {'error': 'Word not in dictionary'}
 
     hint = 'it'
-    if word_of_the_day < word:
+    if word_of_the_day < unidecode(word):
         hint = 'before'
-    if word_of_the_day > word:
+    if word_of_the_day > unidecode(word):
         hint = 'after'
 
     logger.info('Guess: %s for game %d (%s), goal is %s', word, current_game_id, word_of_the_day, hint)

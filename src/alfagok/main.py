@@ -12,7 +12,7 @@ from pydantic import DirectoryPath, FilePath
 from pydantic_settings import BaseSettings
 from unidecode import unidecode
 
-VERSION = '0.3.3'
+VERSION = '0.3.4'
 
 AMSTERDAM = ZoneInfo('Europe/Amsterdam')
 
